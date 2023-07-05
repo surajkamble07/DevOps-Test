@@ -4,7 +4,7 @@ services:
     build: .
     ports:
       - "8000:8000"
-    image: myimagefastapi-demo
+    image: fastapi-app
     volumes:
       - .:/app 
     

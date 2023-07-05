@@ -1,0 +1,32 @@
+version: "3.3"
+services:
+  web:
+    build:
+     context: .
+     dockerfile: Dockerfile
+    ports:
+      - "8001:8000"
+    image: fastapi-app
+    volumes:
+      - .:/app 
+    depends_on:
+       - prometheus
+
+services:
+  prometheus:
+    image: prom/prometheus
+    ports:
+      - 9091:9090
+    environment:
+      COMPOSE_HTTP_TIMEOUT: 120    
+    volumes:
+      - ./prometheus.yml:/usr/local/bin/prometheus.yml/prometheus.yml
+
+  grafana:
+    image: grafana/grafana
+    ports:
+      - 3000:3000
+    environment:
+      COMPOSE_HTTP_TIMEOUT: 120  
+    depends_on:
+      - prometheus

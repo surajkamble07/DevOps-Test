@@ -1,0 +1,21 @@
+pipeline {
+    agent any
+    stages {
+        stage('Git') {
+            steps {
+                git branch: 'main', url: 'https://github.com/surajkamble07/DevOps-Test.git'
+                sh 'docker build -t fastapi-app .'
+            }
+        }
+        stage('Deploy') {
+            steps {
+                sh 'docker run -d -p 8000:8000 fastapi-app'
+            }
+        }
+        stage ('Monitoring') {
+            steps {
+                 sh '''docker-compose -f /usr/local/bin/docker-compose.yml up --build'''
+            }   
+        }
+    }    
+}
